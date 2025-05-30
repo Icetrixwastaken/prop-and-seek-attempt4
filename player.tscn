@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://dibmu31vsb1rv"]
+[gd_scene load_steps=8 format=3 uid="uid://csw8qgxd3mbtk"]
 
 [ext_resource type="Script" path="res://character_body_3d.gd" id="1_2cx4q"]
 [ext_resource type="ArrayMesh" uid="uid://b34f6vnlqa17v" path="res://box_small_decorated.obj" id="2_iewg5"]
