@@ -1,0 +1,63 @@
+[gd_scene load_steps=8 format=3 uid="uid://dfp7k62xw2vlb"]
+
+[ext_resource type="Script" path="res://bullet.gd" id="1_mcmvm"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_br11t"]
+size = Vector3(0.1, 0.1, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_rcqnn"]
+albedo_color = Color(0, 0, 1, 1)
+emission_enabled = true
+emission = Color(0, 0, 1, 1)
+emission_energy_multiplier = 5.0
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_1w4av"]
+albedo_color = Color(0, 0, 1, 1)
+emission_enabled = true
+emission = Color(0, 0, 1, 1)
+emission_energy_multiplier = 8.0
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_duf4u"]
+direction = Vector3(0, 0, 1)
+initial_velocity_min = 3.0
+initial_velocity_max = 5.0
+
+[sub_resource type="BoxMesh" id="BoxMesh_norg1"]
+size = Vector3(0.08, 0.08, 0.08)
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_12f4c"]
+properties/0/path = NodePath(".:position")
+properties/0/spawn = true
+properties/0/replication_mode = 1
+properties/1/path = NodePath(".:rotation")
+properties/1/spawn = true
+properties/1/replication_mode = 1
+
+[node name="Bullet" type="Node3D"]
+script = ExtResource("1_mcmvm")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("BoxMesh_br11t")
+surface_material_override/0 = SubResource("StandardMaterial3D_rcqnn")
+
+[node name="RayCast3D" type="RayCast3D" parent="."]
+target_position = Vector3(0, 0, -0.6)
+
+[node name="GPUParticles3D" type="GPUParticles3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.545997)
+material_override = SubResource("StandardMaterial3D_1w4av")
+emitting = false
+one_shot = true
+explosiveness = 1.0
+process_material = SubResource("ParticleProcessMaterial_duf4u")
+draw_pass_1 = SubResource("BoxMesh_norg1")
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 10.0
+one_shot = true
+autostart = true
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
+replication_config = SubResource("SceneReplicationConfig_12f4c")
+
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

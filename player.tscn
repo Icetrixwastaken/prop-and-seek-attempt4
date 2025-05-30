@@ -1,0 +1,68 @@
+[gd_scene load_steps=8 format=3 uid="uid://dibmu31vsb1rv"]
+
+[ext_resource type="Script" path="res://character_body_3d.gd" id="1_2cx4q"]
+[ext_resource type="ArrayMesh" uid="uid://b34f6vnlqa17v" path="res://box_small_decorated.obj" id="2_iewg5"]
+[ext_resource type="Texture2D" uid="uid://ly41004vvoj2" path="res://dungeon_texture.png" id="2_v6u7d"]
+[ext_resource type="PackedScene" uid="uid://dj417oi2nmvu6" path="res://Scenes/pistol.tscn" id="4_k54pm"]
+[ext_resource type="Texture2D" uid="uid://cgutr8teu1xkb" path="res://Crosshair-PNG-Picture.png" id="5_2kdey"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_f65sb"]
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_bvf06"]
+properties/0/path = NodePath(".:position")
+properties/0/spawn = true
+properties/0/replication_mode = 1
+properties/1/path = NodePath(".:rotation")
+properties/1/spawn = true
+properties/1/replication_mode = 1
+properties/2/path = NodePath("Head/Camera3D:rotation")
+properties/2/spawn = true
+properties/2/replication_mode = 1
+
+[node name="Player" type="CharacterBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 3.0495, 0)
+collision_layer = 3
+script = ExtResource("1_2cx4q")
+texture_atlas = ExtResource("2_v6u7d")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+mesh = ExtResource("2_iewg5")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0)
+shape = SubResource("CapsuleShape3D_f65sb")
+
+[node name="Head" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.896, 0, 0, 0, 1, 0, 4.35455, 0)
+
+[node name="Camera3D" type="Camera3D" parent="Head"]
+transform = Transform3D(1, 0, 0, 0, 1.11607, 0, 0, 0, 1, 0, -3.33786e-06, 0)
+
+[node name="RayCast3D" type="RayCast3D" parent="Head/Camera3D"]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0, 0, 0)
+target_position = Vector3(6, 0, 0)
+collide_with_areas = true
+
+[node name="Pistol" parent="Head/Camera3D" instance=ExtResource("4_k54pm")]
+transform = Transform3D(0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, 0.7, -0.404, -1)
+
+[node name="TextureRect" type="TextureRect" parent="Head/Camera3D"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -300.0
+offset_top = -324.0
+offset_right = 320.0
+offset_bottom = 296.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.1, 0.1)
+pivot_offset = Vector2(300, 324)
+texture = ExtResource("5_2kdey")
+stretch_mode = 5
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
+replication_config = SubResource("SceneReplicationConfig_bvf06")

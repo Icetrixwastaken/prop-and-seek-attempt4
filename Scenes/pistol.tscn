@@ -1,0 +1,13 @@
+[gd_scene load_steps=2 format=3 uid="uid://dj417oi2nmvu6"]
+
+[ext_resource type="PackedScene" uid="uid://d1pvfd5qypj4f" path="res://Models/glb/Pistol.glb" id="1_8e8ed"]
+
+[node name="Pistol" instance=ExtResource("1_8e8ed")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+
+[node name="Pistol_02_Cube" parent="." index="0"]
+cast_shadow = 0
+
+[node name="RayCast3D" type="RayCast3D" parent="." index="1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, -2)
+target_position = Vector3(0, 0, -5)
